@@ -1,0 +1,166 @@
+{
+    "type": [
+      "null",
+      "object"
+    ],
+    "properties": {
+        "day": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "list": {
+            "type": [
+              "null",
+              "string"
+            ]
+        },
+        "list_name": {
+            "type": [
+              "null",
+              "string"
+            ]
+        },
+        "active_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "count_time": {
+            "type": [
+              "null",
+              "string"
+            ]
+        },
+        "disengaged_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "dormant_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "email_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "emailable_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "engaged_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "hardbounce_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "lists_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "lists_remove_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "lists_signup_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "new_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "optout_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "optout_loss_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "passive_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "signup_month": {
+            "type": [
+              "null",
+              "object"
+            ]
+        },
+        "smsable_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "source_count": {
+            "type": [
+              "null",
+              "object"
+            ]
+        },
+        "source_signup_count": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "properties": {
+                "Magazine Subscription Form": {
+                    "type": [
+                      "null",
+                      "integer"
+                    ]
+                }
+            }
+        },
+        "spam_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "spam_loss_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        },
+        "valid_count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+        }
+    }
+}

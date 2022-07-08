@@ -1,0 +1,162 @@
+{
+  "type": [
+    "null",
+    "object"
+  ],
+  "properties": {
+    "blast_id": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "account_name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "name": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "subject": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "list": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "mode": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "modify_user": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "copy_template": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "stats": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {
+        "total": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "properties": {
+            "count": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "beacon_noclick": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "open_total": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "pv": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "sent_count": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "final_blast_id": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "status": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "abtest": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "abtest_segment": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "account": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "start_time": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "modify_time": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "schedule_time": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "email_count": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "data_feed_url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    }
+  }
+}

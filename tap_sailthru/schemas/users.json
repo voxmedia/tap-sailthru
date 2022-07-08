@@ -1,0 +1,88 @@
+{
+  "type": [
+    "null",
+    "object"
+  ],
+  "properties": {
+    "keys": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {
+        "sid": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "cookie": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "email": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
+    },
+    "vars": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "lifetime": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "activity": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "device": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "lists": {
+      "type": [
+        "null",
+        "object"
+      ]
+    },
+    "engagement": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "optout_email": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "purchase_incomplete": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "purchases": {
+      "type": [
+        "null",
+        "array"
+      ]
+    }
+  }
+}

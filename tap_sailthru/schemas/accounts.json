@@ -1,0 +1,98 @@
+{
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "account_name": {
+            "type": [
+                "null",
+                "string"
+              ]
+        },
+        "customer_id": {
+            "type": [
+              "null",
+              "string"
+            ]
+        },
+        "from_emails": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+                "type": [
+                    "null",
+                    "string"
+                ]
+            }
+        },
+        "lists_primary": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+                "type": [
+                    "null",
+                    "string"
+                ]
+            }
+        },
+        "features": {
+            "type": [
+                "null",
+                "object"
+            ],
+            "properties": {
+                "spm_enabled": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                },
+                "predictions": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                },
+                "autotag_enabled": {
+                    "type": [
+                        "null",
+                        "integer"
+                    ]
+                }
+            }
+        },
+        "timezone": {
+            "type": [
+            "null",
+            "string"
+            ]
+        },
+        "id": {
+            "type": [
+            "null",
+            "integer"
+            ]
+        },
+        "beacon_image": {
+            "type": [
+            "null",
+            "string"
+            ]
+        },
+        "apple-app-site-association": {
+            "type": [
+            "null",
+            "array"
+            ]
+        },
+        "message_cookie_duration": {
+            "type": [
+            "null",
+            "integer"
+            ]
+        }
+    }
+}
