@@ -33,32 +33,126 @@
     "vars": {
       "type": [
         "null",
-        "object"
-      ]
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "value": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
     },
     "lifetime": {
       "type": [
         "null",
         "object"
-      ]
+      ],
+      "properties": {
+        "lifetime_message": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "lifetime_click": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "lifetime_open": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        }
+      }
     },
     "activity": {
       "type": [
         "null",
         "object"
-      ]
+      ],
+      "properties": {
+        "signup_time": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "open_time": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "click_time": {
+          "type": [
+            "null",
+            "string"
+          ]
+        },
+        "optout_time": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
     },
     "device": {
       "type": [
         "null",
         "object"
-      ]
+      ],
+      "properties": {
+        "top_device_email": {
+          "type": [
+            "null",
+            "string"
+          ]
+        }
+      }
     },
     "lists": {
       "type": [
         "null",
-        "object"
-      ]
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "list_name": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "signup_time": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      }
     },
     "engagement": {
       "type": [

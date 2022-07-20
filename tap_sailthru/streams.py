@@ -6,10 +6,15 @@ import json
 from pathlib import Path
 import time
 from typing import Any, Dict, Optional, Union, List, Iterable
+import urllib3
+from urllib3.exceptions import IncompleteRead, MaxRetryError, ReadTimeoutError
 
+import backoff
 import pendulum
 import requests
+from requests.exceptions import ChunkedEncodingError, ReadTimeout
 from sailthru.sailthru_client import SailthruClient
+from sailthru.sailthru_error import SailthruClientError
 from sailthru.sailthru_response import SailthruResponse
 from singer_sdk import typing as th  # JSON Schema typing helpers
 from singer_sdk.exceptions import InvalidStreamSortException
@@ -18,10 +23,19 @@ from singer_sdk.helpers._state import finalize_state_progress_markers, log_sort_
 
 from tap_sailthru.client import sailthruStream
 
-# TODO: Delete this is if not using json files for schema definition
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
-# TODO: - Override `UsersStream` and `GroupsStream` with your own stream definition.
-#       - Copy-paste as many times as needed to create multiple stream types.
+
+
+# def patch_urllib3():
+#     """Wrap stream method in try catch to handle IncompleteRead error"""
+#     previous_stream = urllib3.HTTPResponse.stream
+
+#     def new_stream(self, *args, **kwargs):
+#         try:
+#             previous_stream(self, *args, **kwargs)
+#         except IncompleteRead as e:
+#             return e.partial
+#     urllib3.HTTPResponse.stream = new_stream
 
 
 class SailthruJobTimeoutError(Exception):
@@ -62,6 +76,10 @@ class SailthruJobStream(sailthruStream):
             time.sleep(1)
         return response.get('export_url')
 
+    @backoff.on_exception(backoff.expo,
+                          ChunkedEncodingError,
+                          max_tries=3,
+                          factor=2)
     def process_job_csv(
         self,
         export_url: str,
@@ -76,6 +94,7 @@ class SailthruJobStream(sailthruStream):
             to each record
         :return: A generator of a dictionary
         """
+        # patch_urllib3()
         with requests.get(export_url, stream=True) as req:
             reader = csv.DictReader(
                 line.decode('utf-8') for line in req.iter_lines(
@@ -99,104 +118,17 @@ class AccountsStream(sailthruStream):
     replication_key = None
     schema_filepath = SCHEMAS_DIR / "accounts.json"
 
-    def get_url(self, context: Optional[dict]) -> str:
-        """Get stream entity URL.
-
-        Developers override this method to perform dynamic URL generation.
-
-        Args:
-            context: Stream partition or context dictionary.
-
-        Returns:
-            A URL, optionally targeted to a specific partition or context.
-        """
-        return self.path
-
-
-    def _sync_records(  # noqa C901  # too complex
-            self, context: Optional[dict] = None
-    ) -> None:
-        """Sync records, emitting RECORD and STATE messages.
-
-        Args:
-            context: Stream partition or context dictionary.
-
-        Raises:
-            InvalidStreamSortException: TODO
-        """
-        record_count = 0
-        current_context: Optional[dict]
-        context_list: Optional[List[dict]]
-        context_list = [context] if context is not None else self.partitions
-        selected = self.selected
-
-        for current_context in context_list or [{}]:
-            partition_record_count = 0
-            current_context = current_context or None
-            state = self.get_context_state(current_context)
-            state_partition_context = self._get_state_partition_context(current_context)
-            self._write_starting_replication_value(current_context)
-            accounts = current_context.pop('accounts')
-
-            for account in accounts:
-                current_context['api_key'] = account['api_key']
-                current_context['api_secret'] = account['api_secret']
-                current_context['account_name'] = account['name']
-                child_context: Optional[dict] = (
-                    None if current_context is None else copy.copy(current_context)
-                )
-                for record_result in self.get_records(current_context):
-                    if isinstance(record_result, tuple):
-                        # Tuple items should be the record and the child context
-                        record, child_context = record_result
-                    else:
-                        record = record_result
-                    child_context = copy.copy(
-                        self.get_child_context(record=record, context=child_context)
-                    )
-                    record['account_name'] = current_context['account_name']
-
-                    # Sync children, except when primary mapper filters out the record
-                    if self.stream_maps[0].get_filter_result(record):
-                        self._sync_children(child_context)
-                    self._check_max_record_limit(record_count)
-                    if selected:
-                        if (record_count - 1) % self.STATE_MSG_FREQUENCY == 0:
-                            self._write_state_message()
-                        self._write_record_message(record)
-                        try:
-                            self._increment_stream_state(record, context=current_context)
-                        except InvalidStreamSortException as ex:
-                            log_sort_error(
-                                log_fn=self.logger.error,
-                                ex=ex,
-                                record_count=record_count + 1,
-                                partition_record_count=partition_record_count + 1,
-                                current_context=current_context,
-                                state_partition_context=state_partition_context,
-                                stream_name=self.name,
-                            )
-                            raise ex
-
-                    record_count += 1
-                    partition_record_count += 1
-                if current_context == state_partition_context:
-                    # Finalize per-partition state only if 1:1 with context
-                    finalize_state_progress_markers(state)
-            if not context:
-                # Finalize total stream only if we have the full full context.
-                # Otherwise will be finalized by tap at end of sync.
-                finalize_state_progress_markers(self.stream_state)
-            self._write_record_count_log(record_count=record_count, context=context)
-            # Reset interim bookmarks before emitting final STATE message:
-            self._write_state_message()
+    def parse_response(
+        self,
+        response: dict,
+        context: Optional[dict]
+    ) -> Iterable[dict]:
+        """Parse the response and return an iterator of result rows."""
+        response['account_name'] = self.config.get('account_name')
+        yield response
 
     def post_process(self, row: str, context: dict) -> dict:
         """As needed, append or transform raw data to match expected structure."""
-        self.logger.debug(f'THIS IS THE RECORD: {row}')
-        self.logger.debug(f'THIS IS THE RECORD TYPE: {type(row)}')
-        row = json.loads(row)
-        self.logger.debug(f'THIS IS THE NEW RECORD TYPE: {type(row)}')
         k_arr = row['domains'].copy().keys()
         for k in k_arr:
             if k == '':
@@ -211,7 +143,6 @@ class BlastStream(sailthruStream):
     primary_keys = ["id"]
     replication_key = "modify_time"
     schema_filepath = SCHEMAS_DIR / "blasts.json"
-    parent_stream_type = AccountsStream
 
     def get_url(self, context: Optional[dict]) -> str:
         return self.path
@@ -229,14 +160,15 @@ class BlastStream(sailthruStream):
         Returns:
             A dictionary containing the request payload.
         """
-        return {'status': 'sent', 'limit': 0, 'start_date': context['start_date']}
+        return {
+            'status': 'sent',
+            'limit': 0,
+            'start_date': self.config.get('start_date')
+        }
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         return {
-            "account_name": context["account_name"],
-            "blast_id": record["blast_id"],
-            "api_key": context["api_key"],
-            "api_secret": context["api_secret"]
+            "blast_id": record["blast_id"]
         }
 
     def parse_response(
@@ -246,7 +178,7 @@ class BlastStream(sailthruStream):
     ) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         for row in response['blasts']:
-            row['account_name'] = context['account_name']
+            row['account_name'] = self.config.get('account_name')
             yield row
 
 
@@ -299,8 +231,7 @@ class BlastStatsStream(sailthruStream):
         context: Optional[dict]
     ) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
-        self.logger.info(response)
-        response['account_name'] = context['account_name']
+        response['account_name'] = self.config.get('account_name')
         response['blast_id'] = context['blast_id']
         yield response
 
@@ -401,26 +332,26 @@ class BlastQueryStream(SailthruJobStream):
         context: Optional[dict]
     ):
         blast_id = context['blast_id']
-        client = SailthruClient(
-            context['api_key'],
-            context['api_secret'],
-        )
+        client = self.authenticator
         payload = self.prepare_request_payload(context=context)
         response = client.api_post('job', payload).get_body()
-        self.logger.info(f"Got response: {response}")
         if response.get("error"):
             # https://getstarted.sailthru.com/developers/api/job/#Error_Codes
             # Error code 99 = You may not export a blast that has been sent
             # pylint: disable=logging-fstring-interpolation
             self.logger.info(f"Skipping blast_id: {blast_id}")
-        export_url = self.get_job_url(client=client, job_id=response['job_id'])
+        try:
+            export_url = self.get_job_url(client=client, job_id=response['job_id'])
+        except MaxRetryError:
+            self.logger.info(f"Skipping blast_id: {blast_id}")
+            return
 
         # Add blast id to each record
         yield from self.process_job_csv(
             export_url=export_url,
             parent_params={
                 'blast_id': blast_id,
-                'account_name': context['account_name']
+                'account_name': self.config.get('account_name')
             }
         )
 
@@ -432,10 +363,6 @@ class ListStream(sailthruStream):
     primary_keys = ["list_id"]
     replication_key = "create_time"
     schema_filepath = SCHEMAS_DIR / "lists.json"
-    parent_stream_type = AccountsStream
-
-    def get_url(self, context: Optional[dict]) -> str:
-        return self.path
 
     def prepare_request_payload(
         self,
@@ -454,12 +381,8 @@ class ListStream(sailthruStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         return {
-            "account_name": context["account_name"],
             "list_id": record["list_id"],
-            "list_name": record["name"],
-            "api_key": context["api_key"],
-            "api_secret": context["api_secret"],
-            "start_date": context["start_date"]
+            "list_name": record["name"]
         }
 
     def parse_response(
@@ -469,7 +392,7 @@ class ListStream(sailthruStream):
     ) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         for row in response['lists']:
-            row['account_name'] = context['account_name']
+            row['account_name'] = self.config.get('account_name')
             yield row
 
 
@@ -481,9 +404,6 @@ class ListStatsStream(sailthruStream):
     schema_filepath = SCHEMAS_DIR / "list_stats.json"
     parent_stream_type = ListStream
     rest_method = 'GET'
-
-    def get_url(self, context: Optional[dict]) -> str:
-        return self.path
 
     def prepare_request_payload(
         self,
@@ -509,9 +429,31 @@ class ListStatsStream(sailthruStream):
         context: Optional[dict]
     ) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
-        response['account_name'] = context['account_name']
+        response['account_name'] = self.config.get('account_name')
         response['list_id'] = context['list_id']
         yield response
+
+    def post_process(self, row: dict, context: Optional[dict]) -> dict:
+        """As needed, append or transform raw data to match expected structure."""
+        keys_arr = row.copy().keys()
+        if 'signup_month' in keys_arr:
+            signup_month_stats_dict = row.pop('signup_month')
+            new_signup_month_stats_arr = []
+            for signup_month, signup_month_dict in signup_month_stats_dict.items():
+                new_signup_month_stats_arr.append({
+                    **{'signup_month': signup_month},
+                    **signup_month_dict
+                })
+            row['signup_month'] = new_signup_month_stats_arr
+        if 'source_count' in keys_arr:
+            source_count_dict = row.copy()['source_count']
+            new_source_count_arr = []
+            for k, v in source_count_dict.items():
+                new_source_count_arr.append(
+                    {'source': k, 'count': v}
+                )
+            row['source_count'] = new_source_count_arr
+        return row
 
 
 class ListMemberStream(SailthruJobStream):
@@ -519,8 +461,8 @@ class ListMemberStream(SailthruJobStream):
     name = "list_members"
     job_name = "list_members"
     path = "job"
-    primary_keys = ["email_hash", "list_id"]
-    replication_key = "list_signup"
+    primary_keys = ["Email Hash", "List Id"]
+    replication_key = "List Signup"
     schema_filepath = SCHEMAS_DIR / "list_members.json"
     parent_stream_type = ListStream
     signup_dt = pendulum.datetime(2022, 5, 15, tz='UTC')
@@ -546,17 +488,14 @@ class ListMemberStream(SailthruJobStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         return_dict = {
-            "account_name": context["account_name"],
-            "list_id": record["list_id"],
-            "user_id": record["profile_id"],
-            "api_key": context["api_key"],
-            "api_secret": context["api_secret"]
+            "list_id": record["List Id"],
+            "user_id": record["Profile Id"]
         }
         try:
-            return_dict["list_name"] = record["list_name"]
+            return_dict["list_name"] = record["List Name"]
         except KeyError:
             try:
-                return_dict["list_name"] = record["name"]
+                return_dict["list_name"] = record["Name"]
             except KeyError:
                 pass
         return return_dict
@@ -608,21 +547,27 @@ class ListMemberStream(SailthruJobStream):
                         if len(record['list_signup']) > 0:
                             list_signup = pendulum.parse(record['list_signup'])
                         else:
-                            list_signup = pendulum.parse(record['profile_created_date'])
+                            if len(record['profile_created_date']) > 0:
+                                list_signup = pendulum.parse(record['profile_created_date'])
+                            else:
+                                list_signup = pendulum.parse(record['signup_date'])
                     else:
-                        list_signup = pendulum.parse(record['profile_created_date'])
+                        if len(record['profile_created_date']) > 0:
+                            list_signup = pendulum.parse(record['profile_created_date'])
+                        else:
+                            list_signup = pendulum.parse(record['signup_date'])
                 except ValueError:
-                    list_signup = pendulum.parse(record['profile_created_date'])
-                    if self.selectively_sync_children and list_signup > self.signup_dt:
-                        self._sync_children(child_context)
+                    list_signup = pendulum.datetime(2022, 5, 20, tz='UTC')
+                except KeyError:
+                    list_signup = pendulum.datetime(2022, 5, 20, tz='UTC')
+                if self.selectively_sync_children and list_signup > self.signup_dt:
+                    self._sync_children(child_context)
                 # if self.stream_maps[0].get_filter_result(record):
                 #     self._sync_children(child_context)
                 self._check_max_record_limit(record_count)
                 if selected:
                     if (record_count - 1) % self.STATE_MSG_FREQUENCY == 0:
                         self._write_state_message()
-                    # self.logger.info('THIS IS THE TYPE OF THE RECORD: %s', type(record))
-                    # self.logger.info('THIS IS THE RECORD: %s', record)
                     self._write_record_message(record)
                     try:
                         self._increment_stream_state(record, context=current_context)
@@ -656,39 +601,47 @@ class ListMemberStream(SailthruJobStream):
         context: Optional[dict]
     ):
         list_name = context['list_name']
-        client = SailthruClient(
-            context['api_key'],
-            context['api_secret'],
-        )
+        client = self.authenticator
         payload = self.prepare_request_payload(context=context)
         response = client.api_post('job', payload).get_body()
-        self.logger.info(f"Got response: {response}")
         if response.get("error"):
             # https://getstarted.sailthru.com/developers/api/job/#Error_Codes
             # Error code 99 = You may not export a blast that has been sent
             # pylint: disable=logging-fstring-interpolation
             self.logger.info(f"Skipping list_name: {list_name}")
-        export_url = self.get_job_url(client=client, job_id=response['job_id'])
+        try:
+            export_url = self.get_job_url(client=client, job_id=response['job_id'])
+        except MaxRetryError:
+            self.logger.info(f"Skipping list: {list_name}")
+            return
 
-        # Add blast id to each record
+        # Add list id to each record
         yield from self.process_job_csv(
             export_url=export_url,
             parent_params={
-                'list_name': list_name,
-                'list_id': context['list_id'],
-                'account_name': context['account_name']
+                'List Name': list_name,
+                'List Id': context['list_id'],
+                'Account Name': self.config.get('account_name')
             }
         )
 
     def post_process(self, row: dict) -> dict:
         """As needed, append or transform raw data to match expected structure."""
-        keys_arr = list(row.keys())
-        for k in keys_arr:
-            snake_k = k.replace(' ', '_').lower()
-            if snake_k not in row.keys():
-                row[snake_k] = row[k]
-                del row[k]
-        return row
+        new_row = {}
+        schema_keys = list(self._schema.copy()['properties'].keys())
+        custom_vars_arr = []
+        for k, v in row.items():
+            if k in schema_keys:
+                new_row[k] = v
+            else:
+                custom_vars_arr.append(
+                    {
+                        'var_name': k,
+                        'var_value': str(v)
+                    }
+                )
+        new_row['custom_vars'] = custom_vars_arr
+        return new_row
 
 
 class UsersStream(sailthruStream):
@@ -702,6 +655,71 @@ class UsersStream(sailthruStream):
 
     def get_url(self, context: Optional[dict]) -> str:
         return self.path
+
+    @backoff.on_exception(backoff.expo,
+                          TimeoutError,
+                          max_tries=5,
+                          factor=4)
+    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
+        """Request records from REST endpoint(s), returning response records.
+
+        If pagination is detected, pages will be recursed automatically.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Yields:
+            An item for every record in the response.
+
+        Raises:
+            RuntimeError: If a loop in pagination is detected. That is, when two
+                consecutive pagination tokens are identical.
+        """
+        next_page_token: Any = None
+        finished = False
+
+        client = self.authenticator
+        http_method = self.rest_method
+        url: str = self.get_url(context)
+        request_data = self.prepare_request_payload(context, next_page_token) or {}
+        headers = self.http_headers
+
+        while not finished:
+            try:
+                request = client._api_request(
+                    url,
+                    request_data,
+                    http_method,
+                    headers=headers
+                )
+                resp = request.get_body()
+                yield from self.parse_response(resp, context=context)
+                previous_token = copy.deepcopy(next_page_token)
+                next_page_token = self.get_next_page_token(
+                    response=resp, previous_token=previous_token
+                )
+                if next_page_token and next_page_token == previous_token:
+                    raise RuntimeError(
+                        f"Loop detected in pagination. "
+                        f"Pagination token {next_page_token} is identical to prior token."
+                    )
+                # Cycle until get_next_page_token() no longer returns a value
+                finished = not next_page_token
+            except TimeoutError:
+                self.logger.info(f"WE GOT OURSELVES A GOSH DARN TimeoutError: {url}")
+                pass
+            except ChunkedEncodingError:
+                self.logger.info(f"WE GOT OURSELVES A GOSH DARN chunk Error: {url}")
+                pass
+            except ReadTimeout:
+                self.logger.info(f"WE GOT OURSELVES A GOSH DARN ReadTimeout: {url}")
+                pass
+            except ReadTimeoutError:
+                self.logger.info(f"WE GOT OURSELVES A GOSH DARN ReadTimeoutError: {url}")
+                pass
+            except SailthruClientError:
+                self.logger.info(f"WE GOT OURSELVES A GOSH DARN SailthruClientError: {url}")
+                pass
 
     def prepare_request_payload(
         self,
@@ -742,3 +760,20 @@ class UsersStream(sailthruStream):
     ) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         yield response
+
+    def post_process(self, row: dict, context: dict) -> dict:
+        """As needed, append or transform raw data to match expected structure."""
+        keys_arr = list(row.copy().keys())
+        if 'lists' in keys_arr:
+            lists_arr = []
+            lists_dict = row.pop('lists')
+            if lists_dict:
+                for k, v in lists_dict.items():
+                    lists_arr.append(
+                        {
+                            'list_name': k,
+                            'signup_time': v
+                        }
+                    )
+            row['lists'] = lists_arr
+        return row

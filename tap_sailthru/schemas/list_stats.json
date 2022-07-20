@@ -115,8 +115,76 @@
         "signup_month": {
             "type": [
               "null",
-              "object"
-            ]
+              "array"
+            ],
+            "items": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "properties": {
+                "active_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "disengaged_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "dormant_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "email_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "engaged_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "hardbounce_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "lists_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "optout_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                },
+                "signup_month": {
+                  "type": [
+                    "null",
+                    "string"
+                  ]
+                },
+                "passive_count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                }
+              }
+            }
         },
         "smsable_count": {
             "type": [
@@ -127,21 +195,27 @@
         "source_count": {
             "type": [
               "null",
-              "object"
-            ]
-        },
-        "source_signup_count": {
-            "type": [
-              "null",
-              "object"
+              "array"
             ],
-            "properties": {
-                "Magazine Subscription Form": {
+            "items": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "properties": {
+                "source": {
+                  "type": [
+                    "null",
+                    "string"
+                  ],
+                  "count": {
                     "type": [
                       "null",
                       "integer"
                     ]
+                  }
                 }
+              }
             }
         },
         "spam_count": {

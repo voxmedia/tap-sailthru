@@ -26,22 +26,19 @@
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
     },
     "open_time": {
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
     },
     "click_time": {
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
     },
     "first_ten_clicks": {
       "type": [
@@ -53,8 +50,7 @@
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
     },
     "device": {
       "type": [
@@ -66,8 +62,7 @@
       "type": [
         "null",
         "string"
-      ],
-      "format": "date-time"
+      ]
     }
   }
 }
