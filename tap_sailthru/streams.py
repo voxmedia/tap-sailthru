@@ -6,13 +6,12 @@ import json
 from pathlib import Path
 import time
 from typing import Any, Dict, Optional, Union, List, Iterable
-import urllib3
-from urllib3.exceptions import IncompleteRead, MaxRetryError, ReadTimeoutError
+from urllib3.exceptions import MaxRetryError
 
 import backoff
 import pendulum
 import requests
-from requests.exceptions import ChunkedEncodingError, ReadTimeout
+from requests.exceptions import ChunkedEncodingError
 from sailthru.sailthru_client import SailthruClient
 from sailthru.sailthru_error import SailthruClientError
 from sailthru.sailthru_response import SailthruResponse
@@ -458,7 +457,7 @@ class ListMemberStream(SailthruJobStream):
     replication_key = "List Signup"
     schema_filepath = SCHEMAS_DIR / "list_members.json"
     parent_stream_type = ListStream
-    signup_dt = pendulum.datetime(2022, 5, 20, tz='UTC')
+    signup_dt = pendulum.yesterday('UTC')
     selectively_sync_children = True
 
     def prepare_request_payload(
@@ -550,13 +549,11 @@ class ListMemberStream(SailthruJobStream):
                         else:
                             list_signup = pendulum.parse(record['signup_date'])
                 except ValueError:
-                    list_signup = pendulum.datetime(2022, 5, 17, tz='UTC')
+                    list_signup = pendulum.yesterday('UTC')
                 except KeyError:
-                    list_signup = pendulum.datetime(2022, 5, 17, tz='UTC')
+                    list_signup = pendulum.yesterday('UTC')
                 if self.selectively_sync_children and list_signup > self.signup_dt:
                     self._sync_children(child_context)
-                # if self.stream_maps[0].get_filter_result(record):
-                #     self._sync_children(child_context)
                 self._check_max_record_limit(record_count)
                 if selected:
                     if (record_count - 1) % self.STATE_MSG_FREQUENCY == 0:
