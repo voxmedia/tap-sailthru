@@ -26,18 +26,6 @@ from tap_sailthru.client import sailthruStream
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
-# def patch_urllib3():
-#     """Wrap stream method in try catch to handle IncompleteRead error"""
-#     previous_stream = urllib3.HTTPResponse.stream
-
-#     def new_stream(self, *args, **kwargs):
-#         try:
-#             previous_stream(self, *args, **kwargs)
-#         except IncompleteRead as e:
-#             return e.partial
-#     urllib3.HTTPResponse.stream = new_stream
-
-
 class SailthruJobTimeoutError(Exception):
     pass
 
@@ -94,20 +82,25 @@ class SailthruJobStream(sailthruStream):
             to each record
         :return: A generator of a dictionary
         """
-        # patch_urllib3()
         with requests.get(export_url, stream=True) as req:
-            reader = csv.DictReader(
-                line.decode('utf-8') for line in req.iter_lines(
-                    chunk_size=chunk_size
+            try:
+                reader = csv.DictReader(
+                    line.decode('utf-8') for line in req.iter_lines(
+                        chunk_size=chunk_size
+                    )
                 )
-            )
-            for row in reader:
-                if parent_params:
-                    row.update(parent_params)
-                if self.name == 'list_members':
-                    yield self.post_process(row)
-                else:
-                    yield row
+                for row in reader:
+                    if parent_params:
+                        row.update(parent_params)
+                    if self.name == 'list_members':
+                        yield self.post_process(row)
+                    else:
+                        yield row
+            except ChunkedEncodingError:
+                self.logger.info(
+                    "Chunked Encoding Error in the list member stream, stopping early"
+                )
+                pass
 
 
 class AccountsStream(sailthruStream):
@@ -465,7 +458,7 @@ class ListMemberStream(SailthruJobStream):
     replication_key = "List Signup"
     schema_filepath = SCHEMAS_DIR / "list_members.json"
     parent_stream_type = ListStream
-    signup_dt = pendulum.datetime(2022, 5, 15, tz='UTC')
+    signup_dt = pendulum.datetime(2022, 5, 20, tz='UTC')
     selectively_sync_children = True
 
     def prepare_request_payload(
@@ -557,9 +550,9 @@ class ListMemberStream(SailthruJobStream):
                         else:
                             list_signup = pendulum.parse(record['signup_date'])
                 except ValueError:
-                    list_signup = pendulum.datetime(2022, 5, 20, tz='UTC')
+                    list_signup = pendulum.datetime(2022, 5, 17, tz='UTC')
                 except KeyError:
-                    list_signup = pendulum.datetime(2022, 5, 20, tz='UTC')
+                    list_signup = pendulum.datetime(2022, 5, 17, tz='UTC')
                 if self.selectively_sync_children and list_signup > self.signup_dt:
                     self._sync_children(child_context)
                 # if self.stream_maps[0].get_filter_result(record):
@@ -705,20 +698,8 @@ class UsersStream(sailthruStream):
                     )
                 # Cycle until get_next_page_token() no longer returns a value
                 finished = not next_page_token
-            except TimeoutError:
-                self.logger.info(f"WE GOT OURSELVES A GOSH DARN TimeoutError: {url}")
-                pass
-            except ChunkedEncodingError:
-                self.logger.info(f"WE GOT OURSELVES A GOSH DARN chunk Error: {url}")
-                pass
-            except ReadTimeout:
-                self.logger.info(f"WE GOT OURSELVES A GOSH DARN ReadTimeout: {url}")
-                pass
-            except ReadTimeoutError:
-                self.logger.info(f"WE GOT OURSELVES A GOSH DARN ReadTimeoutError: {url}")
-                pass
             except SailthruClientError:
-                self.logger.info(f"WE GOT OURSELVES A GOSH DARN SailthruClientError: {url}")
+                self.logger.info(f"SailthruClientError for User ID : {request_data['id']}")
                 pass
 
     def prepare_request_payload(
