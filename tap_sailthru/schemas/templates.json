@@ -1,0 +1,93 @@
+{
+    "type": [
+      "null",
+      "object"
+    ],
+    "properties": {
+        "template_id": {
+        "type": [
+            "null",
+            "string"
+        ]
+        },
+        "account_name": {
+        "type": [
+            "null",
+            "string"
+        ]
+        },
+        "name": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "labels": {
+        "type": [
+            "null",
+            "array"
+        ],
+        "items": {
+            "type": [
+            "null",
+            "string"
+            ]
+        }
+        },
+        "tags": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "subject": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },        
+        "mode": {
+        "type": [
+            "null",
+            "string"
+        ]
+        },
+        "data_feed_url": {
+            "type": [
+                "null",
+                "string"
+            ]
+        },
+        "valid_count": {
+        "type": [
+            "null",
+            "integer"
+        ]
+        },
+        "modify_time": {
+        "type": [
+            "null",
+            "string"
+        ]
+        },
+        "teams": {
+        "type": [
+            "null",
+            "string"
+        ]
+        },
+        "is_disabled": {
+            "type": [
+                "null",
+                "boolean"
+            ]
+        },
+        "is_basic": {
+            "type": [
+                "null",
+                "boolean"
+            ]
+        }
+    }
+  }
+  

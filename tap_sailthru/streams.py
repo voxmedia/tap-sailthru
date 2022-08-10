@@ -348,9 +348,83 @@ class BlastQueryStream(SailthruJobStream):
         )
 
 
+class TemplateStream(sailthruStream):
+    """Custom Stream for templates"""
+    name = "templates"
+    path = "template"
+    primary_keys = ["template_id"]
+    replication_key = "modify_time"
+    schema_filepath = SCHEMAS_DIR / "templates.json"
+
+    def prepare_request_payload(
+        self,
+        context: Optional[dict],
+        next_page_token: Optional[str] = None
+    ) -> dict:
+        """Prepare request payload.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Returns:
+            A dictionary containing the request payload.
+        """
+        return {}
+
+    def parse_response(
+        self,
+        response: SailthruResponse,
+        context: Optional[dict]
+    ) -> Iterable[dict]:
+        """Parse the response and return an iterator of result rows."""
+        for row in response['templates']:
+            row['account_name'] = self.config.get('account_name')
+            yield row
+
+
 class ListStream(sailthruStream):
     """Custom Stream for lists"""
     name = "lists"
+    path = "list"
+    primary_keys = ["list_id"]
+    replication_key = "create_time"
+    schema_filepath = SCHEMAS_DIR / "lists.json"
+
+    def prepare_request_payload(
+        self,
+        context: Optional[dict],
+        next_page_token: Optional[str] = None
+    ) -> dict:
+        """Prepare request payload.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Returns:
+            A dictionary containing the request payload.
+        """
+        return {}
+
+    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        return {
+            "list_id": record["list_id"],
+            "list_name": record["name"]
+        }
+
+    def parse_response(
+        self,
+        response: SailthruResponse,
+        context: Optional[dict]
+    ) -> Iterable[dict]:
+        """Parse the response and return an iterator of result rows."""
+        for row in response['lists']:
+            row['account_name'] = self.config.get('account_name')
+            yield row
+
+
+class PrimaryListStream(ListStream):
+    """Custom Stream for lists"""
+    name = "primary_lists"
     path = "list"
     primary_keys = ["list_id"]
     replication_key = "create_time"

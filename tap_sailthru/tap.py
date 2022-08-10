@@ -11,9 +11,11 @@ from tap_sailthru.streams import (
     BlastStatsStream,
     BlastQueryStream,
     ListStream,
+    PrimaryListStream,
     ListStatsStream,
     ListMemberStream,
-    UsersStream
+    UsersStream,
+    TemplateStream
 )
 # TODO: Compile a list of custom stream types here
 #       OR rewrite discover_streams() below with your custom logic.
@@ -23,9 +25,11 @@ STREAM_TYPES = [
     BlastStatsStream,
     BlastQueryStream,
     ListStream,
+    PrimaryListStream,
     ListStatsStream,
     ListMemberStream,
-    UsersStream
+    UsersStream,
+    TemplateStream
 ]
 
 
