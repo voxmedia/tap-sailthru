@@ -16,6 +16,18 @@
         "string"
       ]
     },
+    "labels": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "string"
+        ]
+      }
+    },
     "name": {
       "type": [
         "null",
@@ -46,6 +58,18 @@
         "string"
       ]
     },
+    "pause_user": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "public_url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "copy_template": {
       "type": [
         "null",
@@ -70,7 +94,61 @@
                 "integer"
               ]
             },
+            "beacon_click": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "nobeacon_click": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
             "beacon_noclick": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "click_total": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "click_multiple_urls": {
               "type": [
                 "null",
                 "integer"
@@ -87,6 +165,36 @@
                 "null",
                 "integer"
               ]
+            },
+            "optout": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "spam": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "hardbounce": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "softbounce": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },         
+            "view": {
+              "type": [
+                "null",
+                "integer"
+              ]
             }
           }
         }
@@ -99,6 +207,12 @@
       ]
     },
     "final_blast_id": {
+      "type": [
+        "null",
+        "integer"
+      ]
+    },
+    "copy_blast_id": {
       "type": [
         "null",
         "integer"
@@ -122,6 +236,12 @@
         "string"
       ]
     },
+    "abtest_winner_metric": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "account": {
       "type": [
         "null",
@@ -140,6 +260,12 @@
         "string"
       ]
     },
+    "end_time": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
     "schedule_time": {
       "type": [
         "null",
@@ -153,6 +279,18 @@
       ]
     },
     "data_feed_url": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "email_hour_range": {
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    "suppress_list": {
       "type": [
         "null",
         "string"
