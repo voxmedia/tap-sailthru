@@ -530,7 +530,7 @@ class ListMemberStream(SailthruJobStream):
     primary_keys = ["Email Hash", "List Id"]
     replication_key = "List Signup"
     schema_filepath = SCHEMAS_DIR / "list_members.json"
-    parent_stream_type = ListStream
+    parent_stream_type = PrimaryListStream
     signup_dt = pendulum.yesterday('UTC')
     selectively_sync_children = True
 
