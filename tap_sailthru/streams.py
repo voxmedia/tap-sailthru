@@ -91,10 +91,7 @@ class SailthruJobStream(sailthruStream):
                 for row in reader:
                     if parent_params:
                         row.update(parent_params)
-                    if self.name == 'list_members':
-                        yield self.post_process(row)
-                    else:
-                        yield row
+                    yield self.post_process(row)
             except ChunkedEncodingError:
                 self.logger.info(
                     "Chunked Encoding Error in the list member stream, stopping early"
@@ -347,6 +344,13 @@ class BlastQueryStream(SailthruJobStream):
             }
         )
 
+    def post_process(self, row: dict) -> dict:
+        """As needed, append or transform raw data to match expected structure."""
+        new_row = {}
+        for k, v in row.items():
+            new_row[k.lower().replace(' ', '_')] = v
+        return new_row
+
 
 class TemplateStream(sailthruStream):
     """Custom Stream for templates"""
@@ -519,6 +523,14 @@ class ListStatsStream(sailthruStream):
                     {'source': k, 'count': v}
                 )
             row['source_count'] = new_source_count_arr
+        if 'source_signup_count' in keys_arr:
+            source_signup_count_dict = row.copy()['source_signup_count']
+            new_source_signup_count_arr = []
+            for k, v in source_signup_count_dict.items():
+                new_source_signup_count_arr.append(
+                    {'source': k, 'count': v}
+                )
+            row['source_signup_count'] = new_source_signup_count_arr
         return row
 
 

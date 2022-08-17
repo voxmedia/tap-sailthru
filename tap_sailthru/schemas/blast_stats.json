@@ -64,6 +64,12 @@
           "integer"
         ]
       },
+    "purchase_second": {
+        "type": [
+          "null",
+          "integer"
+        ]
+      },
     "purchase_price": {
         "type": [
           "null",
@@ -402,6 +408,36 @@
                 "integer"
               ]
             },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
             "click": {
               "type": [
                 "null",
@@ -495,6 +531,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
               "type": [
                 "null",
                 "integer"
@@ -598,6 +664,36 @@
                 "integer"
               ]
             },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
             "click": {
               "type": [
                 "null",
@@ -691,6 +787,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
               "type": [
                 "null",
                 "integer"
@@ -794,6 +920,164 @@
                 "integer"
               ]
             },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "click": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            }
+          }
+        },
+        "optout_or_hardbounce": {
+          "type": [
+            "null",
+            "object"
+          ],
+          "properties": {
+            "count": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "click_total": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "click_multiple_urls": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "open_total": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "pv": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "optout": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "spam": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "hardbounce": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "softbounce": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "view": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "name": {
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            "confirmed_opens": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "estopens": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "beacon": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
             "click": {
               "type": [
                 "null",
@@ -887,6 +1171,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_price": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "rev": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "null",
+                "integer"
+              ]
+            },
+            "purchase_second": {
               "type": [
                 "null",
                 "integer"
@@ -1084,6 +1398,36 @@
               "integer"
             ]
           },
+          "purchase_price": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "rev": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "purchase_first": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "purchase": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "purchase_second": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
           "click": {
             "type": [
               "null",
@@ -1226,12 +1570,74 @@
               "integer"
             ]
           },
+          "purchase_price": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "rev": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "purchase_first": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "purchase": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "purchase_second": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
           "click": {
             "type": [
               "null",
               "integer"
             ]
           }
+        }
+      }
+    },
+    "purchase_items": {
+      "type": [
+        "null",
+        "object"
+      ],
+      "properties": {
+        "count": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "price": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "qty": {
+          "type": [
+            "null",
+            "integer"
+          ]
+        },
+        "url": {
+          "type": [
+            "null",
+            "string"
+          ]
         }
       }
     }

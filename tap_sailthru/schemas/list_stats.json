@@ -218,6 +218,32 @@
               }
             }
         },
+        "source_signup_count": {
+          "type": [
+            "null",
+            "array"
+          ],
+          "items": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "properties": {
+              "source": {
+                "type": [
+                  "null",
+                  "string"
+                ],
+                "count": {
+                  "type": [
+                    "null",
+                    "integer"
+                  ]
+                }
+              }
+            }
+          }
+      },
         "spam_count": {
             "type": [
               "null",
