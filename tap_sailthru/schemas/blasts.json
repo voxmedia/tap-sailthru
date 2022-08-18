@@ -287,13 +287,13 @@
     "email_hour_range": {
       "type": [
         "null",
-        "string"
+        "integer"
       ]
     },
     "suppress_list": {
       "type": [
         "null",
-        "string"
+        "array"
       ]
     }
   }

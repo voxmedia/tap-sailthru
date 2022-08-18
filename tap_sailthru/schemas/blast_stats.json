@@ -214,6 +214,74 @@
         }
       }
     },
+    "topusers": {
+      "type": [
+        "null",
+        "array"
+      ],
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
+          "email": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "click_url": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "click_total": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "open_total": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "click_time": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "open_time": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "pv": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "rev": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "score": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          }
+        }
+      }
+    },
     "domain_stats": {
       "type": [
         "null",
@@ -1620,32 +1688,32 @@
           "object"
         ],
         "properties": {
-        "count": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "price": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "qty": {
-          "type": [
-            "null",
-            "integer"
-          ]
-        },
-        "url": {
-          "type": [
-            "null",
-            "string"
-          ]
+          "count": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "price": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "qty": {
+            "type": [
+              "null",
+              "integer"
+            ]
+          },
+          "url": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
         }
       }
-    }
     }
   }
 }
