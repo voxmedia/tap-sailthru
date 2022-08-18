@@ -1612,9 +1612,14 @@
     "purchase_items": {
       "type": [
         "null",
-        "object"
+        "array"
       ],
-      "properties": {
+      "items": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "properties": {
         "count": {
           "type": [
             "null",
@@ -1640,6 +1645,7 @@
           ]
         }
       }
+    }
     }
   }
 }
