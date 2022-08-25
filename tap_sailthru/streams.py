@@ -130,7 +130,7 @@ class BlastStream(sailthruStream):
     name = "blasts"
     path = "blast"
     primary_keys = ["id"]
-    replication_key = "modify_time"
+    replication_key = "start_time"
     schema_filepath = SCHEMAS_DIR / "blasts.json"
 
     def get_url(self, context: Optional[dict]) -> str:
@@ -152,7 +152,7 @@ class BlastStream(sailthruStream):
         return {
             'status': 'sent',
             'limit': 0,
-            'start_date': self.config.get('start_date')
+            'start_date': self.stream_state.get('starting_replication_value')
         }
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
@@ -169,6 +169,14 @@ class BlastStream(sailthruStream):
         for row in response['blasts']:
             row['account_name'] = self.config.get('account_name')
             yield row
+
+    def post_process(self, row: dict, context: Optional[dict]) -> dict:
+        """As needed, append or transform raw data to match expected structure."""
+        new_row = copy.deepcopy(row)
+        start_time = row['start_time']
+        parsed_start_time = pendulum.from_format(start_time, 'ddd, D MMM YYYY HH:mm:ss ZZ')
+        new_row['start_time'] = parsed_start_time.to_datetime_string()
+        return row
 
 
 class BlastStatsStream(sailthruStream):
@@ -294,7 +302,6 @@ class BlastQueryStream(SailthruJobStream):
     job_name = "blast_query"
     path = "job"
     primary_keys = ["job_id"]
-    replication_key = "send_time"
     schema_filepath = SCHEMAS_DIR / "blast_query.json"
     parent_stream_type = BlastStream
 
@@ -357,7 +364,6 @@ class TemplateStream(sailthruStream):
     name = "templates"
     path = "template"
     primary_keys = ["template_id"]
-    replication_key = "modify_time"
     schema_filepath = SCHEMAS_DIR / "templates.json"
 
     def prepare_request_payload(
@@ -391,7 +397,6 @@ class ListStream(sailthruStream):
     name = "lists"
     path = "list"
     primary_keys = ["list_id"]
-    replication_key = "create_time"
     schema_filepath = SCHEMAS_DIR / "lists.json"
 
     def prepare_request_payload(
@@ -540,7 +545,6 @@ class ListMemberStream(SailthruJobStream):
     job_name = "list_members"
     path = "job"
     primary_keys = ["Email Hash", "List Id"]
-    replication_key = "List Signup"
     schema_filepath = SCHEMAS_DIR / "list_members.json"
     parent_stream_type = PrimaryListStream
     signup_dt = pendulum.yesterday('UTC')
