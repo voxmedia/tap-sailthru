@@ -179,6 +179,7 @@ class BlastStream(sailthruStream):
     def post_process(self, row: dict, context: Optional[dict]) -> dict:
         """As needed, append or transform raw data to match expected structure."""
         new_row = copy.deepcopy(row)
+        new_row.pop('start_time')
         start_time = row['start_time']
         parsed_start_time = pendulum.from_format(start_time, 'ddd, D MMM YYYY HH:mm:ss ZZ')
         new_row['start_time'] = parsed_start_time.to_datetime_string()
