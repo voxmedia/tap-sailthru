@@ -182,7 +182,7 @@ class BlastStream(sailthruStream):
         start_time = row['start_time']
         parsed_start_time = pendulum.from_format(start_time, 'ddd, D MMM YYYY HH:mm:ss ZZ')
         new_row['start_time'] = parsed_start_time.to_datetime_string()
-        return row
+        return new_row
 
 
 class BlastStatsStream(sailthruStream):
