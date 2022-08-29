@@ -51,79 +51,79 @@
           "null",
           "integer"
         ]
-      },
+    },
     "purchase": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "purchase_first": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "purchase_second": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "purchase_price": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "optout": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "spam": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "hardbounce": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "softbounce": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "view": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "confirmed_opens": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "estopens": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "beacon": {
         "type": [
           "null",
           "integer"
         ]
-      },
+    },
     "click": {
       "type": [
         "null",

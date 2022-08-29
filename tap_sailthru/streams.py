@@ -32,6 +32,12 @@ class SailthruJobTimeoutError(Exception):
 class SailthruJobStream(sailthruStream):
     """sailthru stream class."""
 
+    @backoff.on_exception(
+        backoff.expo,
+        SailthruClientError,
+        max_tries=4,
+        factor=3
+    )
     def get_job_url(
         self,
         client: SailthruClient,
