@@ -4,6 +4,18 @@
       "object"
     ],
     "properties": {
+      "list_id": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
+      "account_name": {
+        "type": [
+          "null",
+          "string"
+        ]
+      },
         "day": {
             "type": [
               "null",
