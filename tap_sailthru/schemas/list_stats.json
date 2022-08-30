@@ -219,7 +219,8 @@
                   "type": [
                     "null",
                     "string"
-                  ],
+                  ]
+                },
                   "count": {
                     "type": [
                       "null",
@@ -228,7 +229,6 @@
                   }
                 }
               }
-            }
         },
         "source_signup_count": {
           "type": [
@@ -245,7 +245,8 @@
                 "type": [
                   "null",
                   "string"
-                ],
+                ]
+              },
                 "count": {
                   "type": [
                     "null",
@@ -254,7 +255,6 @@
                 }
               }
             }
-          }
       },
         "spam_count": {
             "type": [
