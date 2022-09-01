@@ -4,187 +4,187 @@
     "object"
     ],
     "properties": {
-        "List Id": {
+        "list_id": {
             "type": [
             "null",
             "string"
             ]
         },
-        "List Name": {
+        "list_name": {
             "type": [
             "null",
             "string"
             ]
         },
-        "Account Name": {
+        "account_name": {
             "type": [
             "null",
             "string"
             ]
         },
-        "Profile Id": {
+        "profile_id": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Email Hash": {
+        "email_hash": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Domain": {
+        "domain": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Engagement": {
+        "engagement": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Lists": {
+        "lists": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Profile Created Date": {
+        "profile_created_date": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Signup": {
+        "signup": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Opens": {
+        "opens": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Clicks": {
+        "clicks": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Pageviews": {
+        "pageviews": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Last Open": {
+        "last_open": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Last Click": {
+        "last_click": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Last Pageview": {
+        "last_pageview": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Optout Time": {
+        "optout_time": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "List Signup": {
+        "list_signup": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Geolocation City": {
+        "geolocation_city": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Geolocation State": {
+        "geolocation_state": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Geolocation Country": {
+        "geolocation_country": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Geolocation Zip": {
+        "geolocation_zip": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Lifetime Message": {
+        "lifetime_message": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "First Purchase Time": {
+        "first_purchase_time": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Purchase Count": {
+        "purchase_count": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Purchase Price": {
+        "purchase_price": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Purchase Incomplete": {
+        "purchase_incomplete": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Last Purchase Time": {
+        "last_purchase_time": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Largest Purchase Item Price": {
+        "largest_purchase_item_price": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Top Device": {
+        "top_device": {
             "type":[
                 "null",
                 "string"
             ]
         },
-        "Email Status": {
+        "email_status": {
             "type":[
                 "null",
                 "string"

@@ -551,11 +551,9 @@ class ListMemberStream(SailthruJobStream):
     name = "list_members"
     job_name = "list_members"
     path = "job"
-    primary_keys = ["Email Hash", "List Id"]
+    primary_keys = ["email_hash", "list_id"]
     schema_filepath = SCHEMAS_DIR / "list_members.json"
     parent_stream_type = PrimaryListStream
-    signup_dt = pendulum.yesterday('UTC')
-    selectively_sync_children = True
 
     def prepare_request_payload(
         self,
@@ -577,111 +575,17 @@ class ListMemberStream(SailthruJobStream):
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
         return_dict = {
-            "list_id": record["List Id"],
-            "user_id": record["Profile Id"]
+            "list_id": record["list_id"],
+            "user_id": record["profile_id"]
         }
         try:
-            return_dict["list_name"] = record["List Name"]
+            return_dict["list_name"] = record["list_name"]
         except KeyError:
             try:
-                return_dict["list_name"] = record["Name"]
+                return_dict["list_name"] = record["name"]
             except KeyError:
                 pass
         return return_dict
-
-    def _sync_records(  # noqa C901  # too complex
-        self, context: Optional[dict] = None
-    ) -> None:
-        """Sync records, emitting RECORD and STATE messages.
-
-        Args:
-            context: Stream partition or context dictionary.
-
-        Raises:
-            InvalidStreamSortException: TODO
-        """
-        record_count = 0
-        current_context: Optional[dict]
-        context_list: Optional[List[dict]]
-        context_list = [context] if context is not None else self.partitions
-        selected = self.selected
-
-        for current_context in context_list or [{}]:
-            partition_record_count = 0
-            current_context = current_context or None
-            state = self.get_context_state(current_context)
-            state_partition_context = self._get_state_partition_context(current_context)
-            self._write_starting_replication_value(current_context)
-            child_context: Optional[dict] = (
-                None if current_context is None else copy.copy(current_context)
-            )
-            record_results = self.get_records(current_context)
-            for record_result in record_results:
-                if isinstance(record_result, tuple):
-                    # Tuple items should be the record and the child context
-                    record, child_context = record_result
-                else:
-                    record = record_result
-                child_context = copy.copy(
-                    self.get_child_context(record=record, context=child_context)
-                )
-                for key, val in (state_partition_context or {}).items():
-                    # Add state context to records if not already present
-                    if key not in record:
-                        record[key] = val
-
-                # Sync children when list_signup is after midnight UTC yesterday
-                try:
-                    if 'list_signup' in record.keys():
-                        if len(record['list_signup']) > 0:
-                            list_signup = pendulum.parse(record['list_signup'])
-                        else:
-                            if len(record['profile_created_date']) > 0:
-                                list_signup = pendulum.parse(record['profile_created_date'])
-                            else:
-                                list_signup = pendulum.parse(record['signup_date'])
-                    else:
-                        if len(record['profile_created_date']) > 0:
-                            list_signup = pendulum.parse(record['profile_created_date'])
-                        else:
-                            list_signup = pendulum.parse(record['signup_date'])
-                except ValueError:
-                    list_signup = pendulum.yesterday('UTC')
-                except KeyError:
-                    list_signup = pendulum.yesterday('UTC')
-                if self.selectively_sync_children and list_signup > self.signup_dt:
-                    self._sync_children(child_context)
-                self._check_max_record_limit(record_count)
-                if selected:
-                    if (record_count - 1) % self.STATE_MSG_FREQUENCY == 0:
-                        self._write_state_message()
-                    self._write_record_message(record)
-                    try:
-                        self._increment_stream_state(record, context=current_context)
-                    except InvalidStreamSortException as ex:
-                        log_sort_error(
-                            log_fn=self.logger.error,
-                            ex=ex,
-                            record_count=record_count + 1,
-                            partition_record_count=partition_record_count + 1,
-                            current_context=current_context,
-                            state_partition_context=state_partition_context,
-                            stream_name=self.name,
-                        )
-                        raise ex
-
-                record_count += 1
-                partition_record_count += 1
-            if current_context == state_partition_context:
-                # Finalize per-partition state only if 1:1 with context
-                finalize_state_progress_markers(state)
-        if not context:
-            # Finalize total stream only if we have the full full context.
-            # Otherwise will be finalized by tap at end of sync.
-            finalize_state_progress_markers(self.stream_state)
-        self._write_record_count_log(record_count=record_count, context=context)
-        # Reset interim bookmarks before emitting final STATE message:
-        self._write_state_message()
 
     def get_records(
         self,
@@ -706,9 +610,9 @@ class ListMemberStream(SailthruJobStream):
         yield from self.process_job_csv(
             export_url=export_url,
             parent_params={
-                'List Name': list_name,
-                'List Id': context['list_id'],
-                'Account Name': self.config.get('account_name')
+                'list_name': list_name,
+                'list_id': context['list_id'],
+                'account_name': self.config.get('account_name')
             }
         )
 
@@ -718,8 +622,9 @@ class ListMemberStream(SailthruJobStream):
         schema_keys = list(self._schema.copy()['properties'].keys())
         custom_vars_arr = []
         for k, v in row.items():
-            if k in schema_keys:
-                new_row[k] = v
+            cleaned_key = k.lower().replace(' ', '_')
+            if cleaned_key in schema_keys:
+                new_row[cleaned_key] = v
             else:
                 custom_vars_arr.append(
                     {
