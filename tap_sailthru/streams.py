@@ -42,7 +42,7 @@ class SailthruJobStream(sailthruStream):
         self,
         client: SailthruClient,
         job_id: str,
-        timeout: int = 600
+        timeout: int = 1200
     ) -> str:
         """
         Polls the /job endpoint and checks to see if export job is completed.
