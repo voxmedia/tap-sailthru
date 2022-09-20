@@ -1,11 +1,12 @@
 """Stream type classes for tap-sailthru."""
 
+from collections import OrderedDict
 import copy
 import csv
 import json
 from pathlib import Path
 import time
-from typing import Any, Dict, Optional, Union, List, Iterable
+from typing import Any, Dict, Optional, OrderedDict, Union, List, Iterable
 from urllib3.exceptions import MaxRetryError
 
 import backoff
@@ -573,20 +574,6 @@ class ListMemberStream(SailthruJobStream):
             'list': context['list_name']
         }
 
-    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
-        return_dict = {
-            "list_id": record["list_id"],
-            "user_id": record["profile_id"]
-        }
-        try:
-            return_dict["list_name"] = record["list_name"]
-        except KeyError:
-            try:
-                return_dict["list_name"] = record["name"]
-            except KeyError:
-                pass
-        return return_dict
-
     def get_records(
         self,
         context: Optional[dict]
@@ -619,11 +606,14 @@ class ListMemberStream(SailthruJobStream):
     def post_process(self, row: dict) -> dict:
         """As needed, append or transform raw data to match expected structure."""
         new_row = {}
+        # We convert the row into an ordered dict to prioritize Sailthru-native vars
+        # over user-created vars with the same name
+        ordered_row = OrderedDict(row)
         schema_keys = list(self._schema.copy()['properties'].keys())
         custom_vars_arr = []
-        for k, v in row.items():
+        for k, v in ordered_row.items():
             cleaned_key = k.lower().replace(' ', '_')
-            if cleaned_key in schema_keys:
+            if cleaned_key in schema_keys and cleaned_key not in new_row.keys():
                 new_row[cleaned_key] = v
             else:
                 custom_vars_arr.append(
@@ -636,70 +626,14 @@ class ListMemberStream(SailthruJobStream):
         return new_row
 
 
-class UsersStream(sailthruStream):
+class UsersStream(SailthruJobStream):
     """Define custom stream."""
     name = "users"
     path = "user"
     primary_keys = ["email"]
     schema_filepath = SCHEMAS_DIR / "users.json"
-    parent_stream_type = ListMemberStream
-    state_partitioning_keys = []
+    parent_stream_type = PrimaryListStream
 
-    def get_url(self, context: Optional[dict]) -> str:
-        return self.path
-
-    @backoff.on_exception(backoff.expo,
-                          TimeoutError,
-                          max_tries=5,
-                          factor=4)
-    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
-        """Request records from REST endpoint(s), returning response records.
-
-        If pagination is detected, pages will be recursed automatically.
-
-        Args:
-            context: Stream partition or context dictionary.
-
-        Yields:
-            An item for every record in the response.
-
-        Raises:
-            RuntimeError: If a loop in pagination is detected. That is, when two
-                consecutive pagination tokens are identical.
-        """
-        next_page_token: Any = None
-        finished = False
-
-        client = self.authenticator
-        http_method = self.rest_method
-        url: str = self.get_url(context)
-        request_data = self.prepare_request_payload(context, next_page_token) or {}
-        headers = self.http_headers
-
-        while not finished:
-            try:
-                request = client._api_request(
-                    url,
-                    request_data,
-                    http_method,
-                    headers=headers
-                )
-                resp = request.get_body()
-                yield from self.parse_response(resp, context=context)
-                previous_token = copy.deepcopy(next_page_token)
-                next_page_token = self.get_next_page_token(
-                    response=resp, previous_token=previous_token
-                )
-                if next_page_token and next_page_token == previous_token:
-                    raise RuntimeError(
-                        f"Loop detected in pagination. "
-                        f"Pagination token {next_page_token} is identical to prior token."
-                    )
-                # Cycle until get_next_page_token() no longer returns a value
-                finished = not next_page_token
-            except SailthruClientError:
-                self.logger.info(f"SailthruClientError for User ID : {request_data['id']}")
-                pass
 
     def prepare_request_payload(
         self,
@@ -714,24 +648,45 @@ class UsersStream(sailthruStream):
         Returns:
             A dictionary containing the request payload.
         """
-        sid = context['user_id']
         return {
-            'id': sid,
-            'key': 'sid',
-            "fields": {
-                "activity": 1,
-                "device": 1,
-                "engagement": 1,
-                "keys": 1,
-                "lifetime": 1,
-                "lists": 1,
-                "optout_email": 1,
-                "purchase_incomplete": 1,
-                "purchases": 1,
-                "smart_lists": 1,
-                "vars": 1
+            "job": "snapshot",
+            "query": {
+                "source_list": context['list_name'],
+                "criteria": ["var_date"],
+                "field": ["signup"],
+                "timerange": ["since_date"],
+                "value": ["-3 days"]
             }
         }
+
+    def get_records(
+        self,
+        context: Optional[dict]
+    ):
+        list_name = context['list_name']
+        client = self.authenticator
+        payload = self.prepare_request_payload(context=context)
+        response = client.api_post('job', payload).get_body()
+        if response.get("error"):
+            # https://getstarted.sailthru.com/developers/api/job/#Error_Codes
+            # Error code 99 = You may not export a blast that has been sent
+            # pylint: disable=logging-fstring-interpolation
+            self.logger.info(f"Skipping list_name: {list_name}")
+        try:
+            export_url = self.get_job_url(client=client, job_id=response['job_id'])
+        except MaxRetryError:
+            self.logger.info(f"Skipping list: {list_name}")
+            return
+
+        # Add list id to each record
+        yield from self.process_job_csv(
+            export_url=export_url,
+            parent_params={
+                'list_name': list_name,
+                'list_id': context['list_id'],
+                'account_name': self.config.get('account_name')
+            }
+        )
 
     def parse_response(
         self,
