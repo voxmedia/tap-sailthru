@@ -90,15 +90,22 @@ class SailthruJobStream(sailthruStream):
         """
         with requests.get(export_url, stream=True) as req:
             try:
-                reader = csv.DictReader(
-                    line.decode('utf-8') for line in req.iter_lines(
+                reader = csv.reader(
+                    (line.decode('utf-8') for line in req.iter_lines(
                         chunk_size=chunk_size
-                    )
+                    )),
+                    delimiter=',',
+                    quotechar='"'
                 )
+                fieldnames = next(reader)
                 for row in reader:
+                    dicted_row = {}
+                    for n, v in zip(fieldnames, row):
+                        if n not in dicted_row.keys():
+                            dicted_row[n] = v
                     if parent_params:
-                        row.update(parent_params)
-                    yield self.post_process(row)
+                        dicted_row.update(parent_params)
+                    yield self.post_process(dicted_row)
             except ChunkedEncodingError:
                 self.logger.info(
                     "Chunked Encoding Error in the list member stream, stopping early"
@@ -623,6 +630,8 @@ class ListMemberStream(SailthruJobStream):
                     }
                 )
         new_row['custom_vars'] = custom_vars_arr
+        if 'email_hash' not in new_row.keys():
+            new_row['email_hash'] = ''
         return new_row
 
 
@@ -633,7 +642,6 @@ class UsersStream(SailthruJobStream):
     primary_keys = ["email"]
     schema_filepath = SCHEMAS_DIR / "users.json"
     parent_stream_type = PrimaryListStream
-
 
     def prepare_request_payload(
         self,
