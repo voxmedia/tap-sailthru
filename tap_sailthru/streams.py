@@ -595,7 +595,11 @@ class ListMemberStream(SailthruJobStream):
             # pylint: disable=logging-fstring-interpolation
             self.logger.info(f"Skipping list_name: {list_name}")
         try:
-            export_url = self.get_job_url(client=client, job_id=response['job_id'])
+            export_url = self.get_job_url(
+                client=client,
+                job_id=response['job_id'],
+                timeout=1800
+            )
         except MaxRetryError:
             self.logger.info(f"Skipping list: {list_name}")
             return
