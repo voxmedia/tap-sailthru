@@ -3,13 +3,15 @@
 from collections import OrderedDict
 import copy
 import csv
+import heapq
 import json
 from pathlib import Path
 import time
-from typing import Any, Dict, Optional, OrderedDict, Union, List, Iterable
+from typing import Any, Dict, Optional, Union, List, Iterable
 from urllib3.exceptions import MaxRetryError
 
 import backoff
+from google.cloud import bigquery
 import pendulum
 import requests
 from requests.exceptions import ChunkedEncodingError
@@ -485,6 +487,49 @@ class PrimaryListStream(ListStream):
             row['account_name'] = self.config.get('account_name')
             yield row
 
+
+class ListMembersParentStream(sailthruStream):
+    """Manufactured Stream to help with load balancing for List Members stream"""
+    name = "list_members_parent"
+    schema_filepath = SCHEMAS_DIR / "lists.json"
+
+    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
+        lists_query = """
+            SELECT
+                list_name,
+                max(valid_email_count) email_count
+            FROM `nymag-analytics-157315.stg_sailthru.stg__sailthru_lists`
+            where
+                account = '""" + self.config.get('account_name') + """'
+                and is_primary
+            group by 1
+            order by 1
+        """
+        self.logger.info(f"Executing query: {lists_query}")
+        client = bigquery.Client(project='nymag-analytics-157315')
+        results = client.query(lists_query).result()
+
+        list_names = [[] for _ in range(self.config.get('num_chunks'))]
+        list_ids = [[] for _ in range(self.config.get('num_chunks'))]
+        totals = [(0, i) for i in range(self.config.get('num_chunks'))]
+        heapq.heapify(totals)  # create a heap queue
+        for result in results:
+            total, index = heapq.heappop(totals)  # get the sub-list with the lowest total
+            list_names[index].append(result.list_name)  # add the newsletter name
+            list_ids[index].append(result.list_id)
+            heapq.heappush(totals, (total + result.email_count, index))  # add the valid count
+
+        for list_name, list_id in zip(
+            list_names[self.config.get('chunk_number')],
+            list_ids[self.config.get('chunk_number')]
+        ):
+            yield {'list_name': list_name, 'list_id': list_id}
+
+    def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        return {
+            "list_name": record["list_name"],
+            "list_id": record["list_id"]
+        }
 
 class ListStatsStream(sailthruStream):
     """Define custom stream."""

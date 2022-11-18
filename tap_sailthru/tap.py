@@ -13,6 +13,7 @@ from tap_sailthru.streams import (
     ListStream,
     PrimaryListStream,
     ListStatsStream,
+    ListMembersParentStream,
     ListMemberStream,
     UsersStream,
     TemplateStream
@@ -27,6 +28,7 @@ STREAM_TYPES = [
     ListStream,
     PrimaryListStream,
     ListStatsStream,
+    ListMembersParentStream,
     ListMemberStream,
     UsersStream,
     TemplateStream
@@ -74,6 +76,18 @@ class Tapsailthru(Tap):
             default=300,
             description="The url for the API service"
         ),
+        th.Property(
+            "num_chunks",
+            th.IntegerType,
+            default=1,
+            description="How many chunks to split List Members into"
+        ),
+        th.Property(
+            "chunk_number",
+            th.IntegerType,
+            default=0,
+            description="which chunk to feed into List Members"
+        )
     ).to_dict()
 
     def discover_streams(self) -> List[Stream]:
