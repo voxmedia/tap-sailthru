@@ -107,7 +107,11 @@ class SailthruJobStream(sailthruStream):
                             dicted_row[n] = v
                     if parent_params:
                         dicted_row.update(parent_params)
-                    yield self.post_process(dicted_row)
+                    transformed_row = self.post_process(dicted_row)
+                    if transformed_row is None:
+                        continue
+                    else:
+                        yield self.post_process(dicted_row)
             except ChunkedEncodingError:
                 self.logger.info(
                     "Chunked Encoding Error in the list member stream, stopping early"
@@ -531,6 +535,7 @@ class ListMembersParentStream(sailthruStream):
             "list_id": record["list_id"]
         }
 
+
 class ListStatsStream(sailthruStream):
     """Define custom stream."""
     name = "list_stats"
@@ -604,9 +609,8 @@ class ListMemberStream(SailthruJobStream):
     name = "list_members"
     job_name = "list_members"
     path = "job"
-    primary_keys = ["email_hash", "list_id"]
     schema_filepath = SCHEMAS_DIR / "list_members.json"
-    parent_stream_type = PrimaryListStream
+    parent_stream_type = ListMembersParentStream
 
     def prepare_request_payload(
         self,
@@ -631,6 +635,7 @@ class ListMemberStream(SailthruJobStream):
         context: Optional[dict]
     ):
         list_name = context['list_name']
+        list_id = context['list_id']
         client = self.authenticator
         payload = self.prepare_request_payload(context=context)
         response = client.api_post('job', payload).get_body()
@@ -639,8 +644,13 @@ class ListMemberStream(SailthruJobStream):
             # Error code 99 = You may not export a blast that has been sent
             # pylint: disable=logging-fstring-interpolation
             self.logger.info(f"Skipping list_name: {list_name}")
+            return
         try:
-            export_url = self.get_job_url(client=client, job_id=response['job_id'])
+            export_url = self.get_job_url(
+                client=client,
+                job_id=response['job_id'],
+                timeout=1800
+            )
         except MaxRetryError:
             self.logger.info(f"Skipping list: {list_name}")
             return
@@ -650,7 +660,7 @@ class ListMemberStream(SailthruJobStream):
             export_url=export_url,
             parent_params={
                 'list_name': list_name,
-                'list_id': context['list_id'],
+                'list_id': list_id,
                 'account_name': self.config.get('account_name')
             }
         )
@@ -676,7 +686,7 @@ class ListMemberStream(SailthruJobStream):
                 )
         new_row['custom_vars'] = custom_vars_arr
         if 'email_hash' not in new_row.keys():
-            new_row['email_hash'] = ''
+            return None
         return new_row
 
 
