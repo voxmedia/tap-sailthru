@@ -3,15 +3,12 @@
 import copy
 import json
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Union
+from typing import Any, Dict, Iterable, Optional
 
 import requests
-from memoization import cached
 from sailthru.sailthru_client import SailthruClient
 from sailthru.sailthru_response import SailthruResponse
 from singer_sdk.authenticators import APIKeyAuthenticator
-from singer_sdk.exceptions import InvalidStreamSortException
-from singer_sdk.helpers._state import finalize_state_progress_markers, log_sort_error
 from singer_sdk.helpers.jsonpath import extract_jsonpath
 from singer_sdk.streams import RESTStream
 

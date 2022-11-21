@@ -3,11 +3,10 @@
 import copy
 import csv
 import heapq
-import json
 import time
 from collections import OrderedDict
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Union
+from typing import Iterable, Optional
 
 import backoff
 import pendulum
@@ -17,10 +16,6 @@ from requests.exceptions import ChunkedEncodingError
 from sailthru.sailthru_client import SailthruClient
 from sailthru.sailthru_error import SailthruClientError
 from sailthru.sailthru_response import SailthruResponse
-from singer_sdk import typing as th  # JSON Schema typing helpers
-from singer_sdk.exceptions import InvalidStreamSortException
-from singer_sdk.helpers._state import finalize_state_progress_markers, log_sort_error
-from singer_sdk.helpers.jsonpath import extract_jsonpath
 from urllib3.exceptions import MaxRetryError
 
 from tap_sailthru.client import sailthruStream
@@ -39,12 +34,12 @@ class SailthruJobStream(sailthruStream):
     def get_job_url(
         self, client: SailthruClient, job_id: str, timeout: int = 1200
     ) -> str:
-        """
-        Polls the /job endpoint and checks to see if export job is completed.
-        Returns the export URL when job is ready.
-        :param job_id: the job_id to poll
-        :param timeout: the default timeout (seconds) before halting request
-        :return: the export URL
+        """Poll the /job endpoint and checks to see if export job is completed.
+
+        :param client: SailthruClient, the Sailthru API client
+        :param job_id: str, the job_id to poll
+        :param timeout: int, number of seconds before halting request (default 1200)
+        :returns: str, the export URL
         """
         status = ""
         job_start_time = pendulum.now()
@@ -69,13 +64,13 @@ class SailthruJobStream(sailthruStream):
     def process_job_csv(
         self, export_url: str, chunk_size: int = 1024, parent_params: dict = None
     ) -> Iterable[dict]:
-        """
-        Fetches CSV from URL and streams each line.
-        :param export_url: The URL from which to fetch the CSV data from
-        :param chunk_size: The chunk size to read per line
-        :param parent_params: A dictionary with "parent" parameters to append
+        """Fetch CSV from URL and streams each line.
+
+        :param export_url: str, The URL from which to fetch the CSV data from
+        :param chunk_size: int, The chunk size to read per line
+        :param parent_params: dict, A dictionary with "parent" parameters to append
             to each record
-        :return: A generator of a dictionary
+        :returns: Iterable[dict], A generator of a dictionary
         """
         with requests.get(export_url, stream=True) as req:
             try:
@@ -147,11 +142,8 @@ class BlastStream(sailthruStream):
     ) -> dict:
         """Prepare request payload.
 
-        Args:
-            context: Stream partition or context dictionary.
-
-        Returns:
-            A dictionary containing the request payload.
+        :param context: Stream partition or context dictionary.
+        :returns: dict, A dictionary containing the request payload.
         """
         return {
             "status": "sent",
@@ -200,11 +192,8 @@ class BlastStatsStream(sailthruStream):
     ) -> dict:
         """Prepare request payload.
 
-        Args:
-            context: Stream partition or context dictionary.
-
-        Returns:
-            A dictionary containing the request payload.
+        :param context: Stream partition or context dictionary
+        :returns: dict, A dictionary containing the request payload
         """
         return {
             "stat": "blast",
@@ -443,7 +432,9 @@ class ListMembersParentStream(sailthruStream):
                 id as list_id,
                 list_name,
                 max(valid_email_count) email_count
-            FROM `""" + self.config.get("table_id") + """`
+            FROM `"""
+            + self.config.get("table_id")
+            + """`
             where
                 account = '"""
             + self.config.get("account_name")
