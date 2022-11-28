@@ -483,14 +483,14 @@ class ListMembersParentStream(SailthruStream):
 
     def query_for_lists(self, context: Optional[dict]) -> List[dict]:
         """Send query to data warehouse to retrieve newsletter data."""
-        lists_query = """
+        lists_query = f"""
             SELECT
                 id as list_id,
                 list_name,
                 max(valid_email_count) email_count
-            FROM `@table_id`
+            FROM `{self.config.get('table_id')}`
             where
-                account = '@account_name'
+                account = @account_name
                 and is_primary
             group by 1, 2
             order by 2
@@ -501,10 +501,7 @@ class ListMembersParentStream(SailthruStream):
             query_parameters=[
                 bigquery.ScalarQueryParameter(
                     "account_name", "STRING", self.config.get("account_name")
-                ),
-                bigquery.ScalarQueryParameter(
-                    "table_id", "STRING", self.config.get("table_id")
-                ),
+                )
             ]
         )
         results = client.query(lists_query, job_config=query_config).result()
@@ -549,7 +546,7 @@ class ListMembersParentStream(SailthruStream):
             heapq.heappush(
                 totals, (total + list_result.email_count, index)
             )
-        return list_names, list_ids, totals
+        return list_names, list_ids
 
     def request_records(self, context: Optional[dict]) -> Iterable[dict]:
         """Retrieve records from SQL query, returning response records.
@@ -562,9 +559,10 @@ class ListMembersParentStream(SailthruStream):
         """
         number_of_chunks = self.config.get("num_chunks")
         results = self.query_for_lists(context=context)
-        list_names, list_ids, totals = self.split_lists_into_chunks(
+        list_names, list_ids = self.split_lists_into_chunks(
             results, number_of_chunks, context=context
         )
+        self.logger.info(list_names)
 
         for list_name, list_id in zip(
             list_names[self.config.get("chunk_number")],
