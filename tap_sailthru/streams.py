@@ -605,7 +605,7 @@ class ListStatsStream(SailthruStream):
             A dictionary containing the request payload.
         """
         return {
-            "stat": "list", "list": context["list_name"], "date": self.config.get("start_date")
+            "stat": "list", "list": context["list_name"]
         }
 
     def parse_response(self, response: dict, context: Optional[dict]) -> Iterable[dict]:
