@@ -6,7 +6,7 @@ import heapq
 import time
 from collections import OrderedDict
 from pathlib import Path
-from typing import Iterable, Optional
+from typing import Iterable, List, Optional
 
 import backoff
 import pendulum
@@ -18,16 +18,21 @@ from sailthru.sailthru_error import SailthruClientError
 from sailthru.sailthru_response import SailthruResponse
 from urllib3.exceptions import MaxRetryError
 
-from tap_sailthru.client import sailthruStream
+from tap_sailthru.client import SailthruStream
 
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
 class SailthruJobTimeoutError(Exception):
+    """class for sailthru job timeout error.
+
+    Args:
+        Exception: error
+    """
     pass
 
 
-class SailthruJobStream(sailthruStream):
+class SailthruJobStream(SailthruStream):
     """sailthru stream class."""
 
     @backoff.on_exception(backoff.expo, SailthruClientError, max_tries=4, factor=3)
@@ -102,7 +107,7 @@ class SailthruJobStream(sailthruStream):
                 pass
 
 
-class AccountsStream(sailthruStream):
+class AccountsStream(SailthruStream):
     """Define custom stream."""
 
     name = "accounts"
@@ -125,7 +130,7 @@ class AccountsStream(sailthruStream):
         return row
 
 
-class BlastStream(sailthruStream):
+class BlastStream(SailthruStream):
     """Define custom stream."""
 
     name = "blasts"
@@ -135,6 +140,14 @@ class BlastStream(sailthruStream):
     schema_filepath = SCHEMAS_DIR / "blasts.json"
 
     def get_url(self, context: Optional[dict]) -> str:
+        """Construct url for api request.
+
+        Args:
+            context (Optional[dict]): meltano context dict
+
+        Returns:
+            str: url
+        """
         return self.path
 
     def prepare_request_payload(
@@ -152,6 +165,15 @@ class BlastStream(sailthruStream):
         }
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Return a child context object from the record and optional provided context.
+
+        Args:
+            record (dict): Individual record in the stream.
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Returns:
+            dict: dictionary for child stream
+        """
         return {"blast_id": record["blast_id"]}
 
     def parse_response(
@@ -174,7 +196,7 @@ class BlastStream(sailthruStream):
         return new_row
 
 
-class BlastStatsStream(sailthruStream):
+class BlastStatsStream(SailthruStream):
     """Define custom stream."""
 
     name = "blast_stats"
@@ -185,6 +207,14 @@ class BlastStatsStream(sailthruStream):
     rest_method = "GET"
 
     def get_url(self, context: Optional[dict]) -> str:
+        """Construct url for api request.
+
+        Args:
+            context (Optional[dict]): meltano context dict
+
+        Returns:
+            str: url
+        """
         return self.path
 
     def prepare_request_payload(
@@ -268,7 +298,7 @@ class BlastStatsStream(sailthruStream):
 
 
 class BlastQueryStream(SailthruJobStream):
-    "Custom Stream for the results of a Blast Query job"
+    """Custom Stream for the results of a Blast Query job."""
     name = "blast_query"
     job_name = "blast_query"
     path = "job"
@@ -290,6 +320,14 @@ class BlastQueryStream(SailthruJobStream):
         return {"job": "blast_query", "blast_id": context["blast_id"]}
 
     def get_records(self, context: Optional[dict]):
+        """Retrieve records by creating and processing export job.
+
+        Args:
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Yields:
+            dict: Individual record from stream
+        """
         blast_id = context["blast_id"]
         client = self.authenticator
         payload = self.prepare_request_payload(context=context)
@@ -322,8 +360,8 @@ class BlastQueryStream(SailthruJobStream):
         return new_row
 
 
-class TemplateStream(sailthruStream):
-    """Custom Stream for templates"""
+class TemplateStream(SailthruStream):
+    """Custom Stream for templates."""
 
     name = "templates"
     path = "template"
@@ -352,8 +390,8 @@ class TemplateStream(sailthruStream):
             yield row
 
 
-class ListStream(sailthruStream):
-    """Custom Stream for lists"""
+class ListStream(SailthruStream):
+    """Custom Stream for lists."""
 
     name = "lists"
     path = "list"
@@ -374,6 +412,15 @@ class ListStream(sailthruStream):
         return {}
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Return a child context object from the record and optional provided context.
+
+        Args:
+            record (dict): Individual record from the stream
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Returns:
+            dict: dictionary with context for the child stream
+        """
         return {"list_id": record["list_id"], "list_name": record["name"]}
 
     def parse_response(
@@ -386,7 +433,7 @@ class ListStream(sailthruStream):
 
 
 class PrimaryListStream(ListStream):
-    """Custom Stream for lists"""
+    """Custom Stream for lists."""
 
     name = "primary_lists"
     path = "list"
@@ -408,6 +455,15 @@ class PrimaryListStream(ListStream):
         return {"primary": 1}
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Return a child context object from the record and optional provided context.
+
+        Args:
+            record (dict): Individual record from the stream
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Returns:
+            dict: dictionary with context for the child stream
+        """
         return {"list_id": record["list_id"], "list_name": record["name"]}
 
     def parse_response(
@@ -419,48 +475,96 @@ class PrimaryListStream(ListStream):
             yield row
 
 
-class ListMembersParentStream(sailthruStream):
-    """Manufactured Stream to help with load balancing for List Members stream"""
+class ListMembersParentStream(SailthruStream):
+    """Manufactured Stream to help with load balancing for List Members stream."""
 
     name = "list_members_parent"
     schema_filepath = SCHEMAS_DIR / "lists.json"
 
-    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
-        lists_query = (
-            """
+    def query_for_lists(self, context: Optional[dict]) -> List[dict]:
+        """Send query to data warehouse to retrieve newsletter data."""
+        lists_query = """
             SELECT
                 id as list_id,
                 list_name,
                 max(valid_email_count) email_count
-            FROM `"""
-            + self.config.get("table_id")
-            + """`
+            FROM `@table_id`
             where
-                account = '"""
-            + self.config.get("account_name")
-            + """'
+                account = '@account_name'
                 and is_primary
             group by 1, 2
             order by 2
         """
-        )
         self.logger.info(f"Executing query: {lists_query}")
-        client = bigquery.Client(project="nymag-analytics-157315")
-        results = client.query(lists_query).result()
+        client = bigquery.Client()
+        query_config = bigquery.QueryJobConfig(
+            query_parameters=[
+                bigquery.ScalarQueryParameter(
+                    "account_name", "STRING", self.config.get("account_name")
+                ),
+                bigquery.ScalarQueryParameter(
+                    "table_id", "STRING", self.config.get("table_id")
+                ),
+            ]
+        )
+        results = client.query(lists_query, job_config=query_config).result()
+        return results
 
-        list_names = [[] for _ in range(self.config.get("num_chunks"))]
-        list_ids = [[] for _ in range(self.config.get("num_chunks"))]
-        totals = [(0, i) for i in range(self.config.get("num_chunks"))]
-        heapq.heapify(totals)  # create a heap queue
-        for result in results:
+    def split_lists_into_chunks(
+        self, list_results: List, num_chunks: int, context: Optional[dict]
+    ):
+        """Split list of newsletters using a priority queue into sub-arrays.
+
+        Using the PSL heapq library, receives a list of dictionaries
+        containing data about email newsletters and divides the list into
+        a configurable number of lists whose summed size is as equal as possible.
+        Loops through list of newsletters and appends each newsletter
+        to the sub-array that has the smallest size at that time.
+
+        Args:
+            list_results (List): list of dicts with newsletter data
+                e.g. [{
+                    'list_id': 'SAMPLE_LIST_ID',
+                    'list_name': 'SAMPLE_LIST_NAME',
+                    'email_count': 100
+                }]
+            num_chunks (int): number of sub-arrays to create, comes from tap config
+            context (Optional[dict]): optional meltano context dictionary
+        """
+        list_names = [[] for _ in range(num_chunks)]
+        list_ids = [[] for _ in range(num_chunks)]
+        totals = [(0, i) for i in range(num_chunks)]
+        # create a heap, a priority queue
+        # in which the smallest element receives the highest priority
+        heapq.heapify(totals)
+        # get the chunk with the highest priority (lowest cumulative email count)
+        for list_result in list_results:
             total, index = heapq.heappop(
                 totals
-            )  # get the sub-list with the lowest total
-            list_names[index].append(result.list_name)  # add the newsletter name
-            list_ids[index].append(result.list_id)
+            )
+            # append the newsletter name to the corresponding array
+            list_names[index].append(list_result.list_name)
+            list_ids[index].append(list_result.list_id)
+            # add the valid count of the added newsletter, then re-prioritize the queue
             heapq.heappush(
-                totals, (total + result.email_count, index)
-            )  # add the valid count
+                totals, (total + list_result.email_count, index)
+            )
+        return list_names, list_ids, totals
+
+    def request_records(self, context: Optional[dict]) -> Iterable[dict]:
+        """Retrieve records from SQL query, returning response records.
+
+        Args:
+            context: Stream partition or context dictionary.
+
+        Yields:
+            An item for every record in the response.
+        """
+        number_of_chunks = self.config.get("num_chunks")
+        results = self.query_for_lists(context=context)
+        list_names, list_ids, totals = self.split_lists_into_chunks(
+            results, number_of_chunks, context=context
+        )
 
         for list_name, list_id in zip(
             list_names[self.config.get("chunk_number")],
@@ -469,10 +573,19 @@ class ListMembersParentStream(sailthruStream):
             yield {"list_name": list_name, "list_id": list_id}
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
+        """Return a child context object from the record and optional provided context.
+
+        Args:
+            record (dict): Individual record from the stream
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Returns:
+            dict: dictionary with context for the child stream
+        """
         return {"list_name": record["list_name"], "list_id": record["list_id"]}
 
 
-class ListStatsStream(sailthruStream):
+class ListStatsStream(SailthruStream):
     """Define custom stream."""
 
     name = "list_stats"
@@ -493,7 +606,9 @@ class ListStatsStream(sailthruStream):
         Returns:
             A dictionary containing the request payload.
         """
-        return {"stat": "list", "list": context["list_name"]}
+        return {
+            "stat": "list", "list": context["list_name"], "date": self.config.get("start_date")
+        }
 
     def parse_response(self, response: dict, context: Optional[dict]) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
@@ -528,7 +643,7 @@ class ListStatsStream(sailthruStream):
 
 
 class ListMemberStream(SailthruJobStream):
-    "Custom Stream for the results of a Export List Data job"
+    """Custom Stream for the results of a Export List Data job."""
     name = "list_members"
     job_name = "list_members"
     path = "job"
@@ -549,6 +664,14 @@ class ListMemberStream(SailthruJobStream):
         return {"job": "export_list_data", "list": context["list_name"]}
 
     def get_records(self, context: Optional[dict]):
+        """Retrieve records by creating and processing export job.
+
+        Args:
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Yields:
+            dict: Individual record from stream
+        """
         list_name = context["list_name"]
         list_id = context["list_id"]
         client = self.authenticator
@@ -630,6 +753,14 @@ class UsersStream(SailthruJobStream):
         }
 
     def get_records(self, context: Optional[dict]):
+        """Retrieve records by creating and processing export job.
+
+        Args:
+            context (Optional[dict]): Stream partition or context dictionary
+
+        Yields:
+            dict: Individual record from stream
+        """
         list_name = context["list_name"]
         client = self.authenticator
         payload = self.prepare_request_payload(context=context)

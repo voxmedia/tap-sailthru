@@ -65,8 +65,7 @@ class Tapsailthru(Tap):
         th.Property(
             "user_agent",
             th.StringType,
-            required=True,
-            description="Project IDs to replicate",
+            description="user agent for http requests",
         ),
         th.Property(
             "start_date",

@@ -15,7 +15,7 @@ from singer_sdk.streams import RESTStream
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
-class sailthruStream(RESTStream):
+class SailthruStream(RESTStream):
     """sailthru stream class."""
 
     url_base = "https://api.sailthru.com/"
@@ -36,8 +36,8 @@ class sailthruStream(RESTStream):
     def http_headers(self) -> dict:
         """Return the http headers needed."""
         headers = {}
-        if "user_agent" in self.config:
-            headers["User-Agent"] = self.config.get("user_agent")
+        # if "user_agent" in self.config:
+        #     headers["User-Agent"] = self.config.get("user_agent")
         # If not using an authenticator, you may also provide inline auth headers:
         # headers["Private-Token"] = self.config.get("auth_token")
         return headers
