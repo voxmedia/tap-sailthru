@@ -683,7 +683,9 @@ class ListMemberStream(SailthruJobStream):
             return
         try:
             export_url = self.get_job_url(
-                client=client, job_id=response["job_id"], timeout=1800
+                client=client,
+                job_id=response["job_id"],
+                timeout=self.config.get('request_timeout')
             )
         except MaxRetryError:
             self.logger.info(f"Skipping list: {list_name}")
