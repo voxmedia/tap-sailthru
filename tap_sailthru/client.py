@@ -2,28 +2,23 @@
 
 import copy
 import json
-import requests
 from pathlib import Path
-from typing import Any, Dict, Optional, Union, List, Iterable
+from typing import Any, Dict, Iterable, Optional
 
-from memoization import cached
+import requests
 from sailthru.sailthru_client import SailthruClient
 from sailthru.sailthru_response import SailthruResponse
-
-from singer_sdk.exceptions import InvalidStreamSortException
-from singer_sdk.helpers.jsonpath import extract_jsonpath
-from singer_sdk.helpers._state import finalize_state_progress_markers, log_sort_error
-from singer_sdk.streams import RESTStream
 from singer_sdk.authenticators import APIKeyAuthenticator
-
+from singer_sdk.helpers.jsonpath import extract_jsonpath
+from singer_sdk.streams import RESTStream
 
 SCHEMAS_DIR = Path(__file__).parent / Path("./schemas")
 
 
-class sailthruStream(RESTStream):
+class SailthruStream(RESTStream):
     """sailthru stream class."""
 
-    url_base = 'https://api.sailthru.com/'
+    url_base = "https://api.sailthru.com/"
 
     records_jsonpath = "$[*]"  # Or override `parse_response`.
     next_page_token_jsonpath = "$.next_page"  # Or override `get_next_page_token`.
@@ -34,15 +29,15 @@ class sailthruStream(RESTStream):
         return SailthruClient(
             self.config.get("api_key"),
             self.config.get("api_secret"),
-            request_timeout=20
+            request_timeout=20,
         )
 
     @property
     def http_headers(self) -> dict:
         """Return the http headers needed."""
         headers = {}
-        if "user_agent" in self.config:
-            headers["User-Agent"] = self.config.get("user_agent")
+        # if "user_agent" in self.config:
+        #     headers["User-Agent"] = self.config.get("user_agent")
         # If not using an authenticator, you may also provide inline auth headers:
         # headers["Private-Token"] = self.config.get("auth_token")
         return headers
@@ -94,10 +89,7 @@ class sailthruStream(RESTStream):
 
         while not finished:
             request = client._api_request(
-                url,
-                request_data,
-                http_method,
-                headers=headers
+                url, request_data, http_method, headers=headers
             )
             resp = request.get_body()
             yield from self.parse_response(resp, context=context)
@@ -126,9 +118,7 @@ class sailthruStream(RESTStream):
         return params
 
     def parse_response(
-        self,
-        response: SailthruResponse,
-        context: Optional[dict] = None
+        self, response: SailthruResponse, context: Optional[dict] = None
     ) -> Iterable[dict]:
         """Parse the response and return an iterator of result rows."""
         # TODO: Parse response body and return a set of records.
