@@ -634,9 +634,12 @@ class ListStatsStream(SailthruStream):
         if "source_signup_count" in keys_arr:
             source_signup_count_dict = row.copy()["source_signup_count"]
             new_source_signup_count_arr = []
-            for k, v in source_signup_count_dict.items():
-                new_source_signup_count_arr.append({"source": k, "count": v})
-            row["source_signup_count"] = new_source_signup_count_arr
+            try:
+                for k, v in source_signup_count_dict.items():
+                    new_source_signup_count_arr.append({"source": k, "count": v})
+                row["source_signup_count"] = new_source_signup_count_arr
+            except AttributeError:
+                row["source_signup_count"] = []
         return row
 
 
