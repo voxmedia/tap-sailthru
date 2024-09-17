@@ -5,129 +5,135 @@
   ],
   "properties": {
     "account_name": {
-        "type": [
-          "null",
-          "string"
-        ]
+      "type": [
+        "null",
+        "string"
+      ]
     },
     "blast_id": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "count": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "click_total": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "click_multiple_urls": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "open_total": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "pv": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "rev": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "purchase": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "purchase_first": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "purchase_second": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "purchase_price": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "optout": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "spam": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "hardbounce": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "softbounce": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "view": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "confirmed_opens": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "estopens": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "beacon": {
-        "type": [
-          "null",
-          "integer"
-        ]
-    },
-    "click": {
       "type": [
         "null",
         "integer"
+      ]
+    },
+    "count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "click_total": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "click_multiple_urls": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "real_clicks": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "real_clicks_total": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "real_opens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "real_opens_total": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "open_total": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "pv": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "confirmed_opens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "estopens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "projected_open_rate": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "projected_open_count": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "beacon": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "click": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "nhi_clicks": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "nhi_clicks_total": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "precached_opens": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "precached_opens_total": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "real_and_precached_opens": {
+      "type": [
+        "integer",
+        "null"
       ]
     },
     "beacon_times": {
@@ -210,6 +216,30 @@
               "null",
               "integer"
             ]
+          },
+          "bot_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "bot_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
           }
         }
       }
@@ -227,56 +257,86 @@
         "properties": {
           "email": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "click_url": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "click_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "bot_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "bot_clicks": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "open_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_time": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "open_time": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "pv": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "rev": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "score": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           }
         }
@@ -301,80 +361,146 @@
           },
           "count": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_multiple_urls": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "inferred_open": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "open_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "pv": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
-          "optout": {
+          "hardbounce": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "spam": {
-            "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "softbounce": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "view": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "confirmed_opens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "estopens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "projected_open_rate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "projected_open_count": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "beacon": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_and_precached_opens": {
+            "type": [
+              "integer",
+              "null"
             ]
           }
         }
@@ -394,122 +520,158 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
@@ -522,122 +684,158 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
@@ -650,122 +848,158 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
@@ -778,122 +1012,158 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
@@ -906,122 +1176,158 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
@@ -1034,122 +1340,158 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
@@ -1162,127 +1504,162 @@
           "properties": {
             "count": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click_multiple_urls": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "inferred_open": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "open_total": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "pv": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "optout": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "spam": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "hardbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "softbounce": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "view": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "name": {
               "type": [
-                "null",
-                "string"
+                "string",
+                "null"
               ]
             },
             "confirmed_opens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "estopens": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "projected_open_rate": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "projected_open_count": {
+              "type": [
+                "integer",
+                "null"
               ]
             },
             "beacon": {
               "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_price": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "rev": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_first": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase": {
-              "type": [
-                "null",
-                "integer"
-              ]
-            },
-            "purchase_second": {
-              "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
               ]
             },
             "click": {
               "type": [
-                "null",
-                "integer"
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "nhi_clicks_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "precached_opens_total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "real_and_precached_opens": {
+              "type": [
+                "integer",
+                "null"
               ]
             }
           }
         }
-
       }
     },
     "signup": {
@@ -1298,74 +1675,128 @@
         "properties": {
           "count": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_multiple_urls": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens_total": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "open_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "pv": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "softbounce": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "view": {
-            "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "name": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "confirmed_opens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "estopens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "projected_open_rate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "projected_open_count": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "beacon": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_and_precached_opens": {
+            "type": [
+              "integer",
+              "null"
             ]
           }
         }
@@ -1382,124 +1813,166 @@
           "object"
         ],
         "properties": {
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "count": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_multiple_urls": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "inferred_open": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "open_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "pv": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "optout": {
-            "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "spam": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "hardbounce": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "softbounce": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "view": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
-          "subject": {
+          "name": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "confirmed_opens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "estopens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "projected_open_rate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "projected_open_count": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "beacon": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase_price": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "rev": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase_first": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase_second": {
-            "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_and_precached_opens": {
+            "type": [
+              "integer",
+              "null"
             ]
           }
         }
@@ -1518,26 +1991,62 @@
         "properties": {
           "url": {
             "type": [
-              "null",
-              "string"
+              "string",
+              "null"
             ]
           },
           "count": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "bot_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "bot_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "hardbounce": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "softbounce": {
+            "type": [
+              "integer",
+              "null"
             ]
           }
         }
@@ -1554,124 +2063,160 @@
           "object"
         ],
         "properties": {
+          "device": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
           "count": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click_multiple_urls": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "inferred_open": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "open_total": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "pv": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "optout": {
-            "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "spam": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "hardbounce": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "softbounce": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "view": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "device": {
-            "type": [
-              "null",
-              "string"
+              "integer",
+              "null"
             ]
           },
           "confirmed_opens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "estopens": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "projected_open_rate": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "projected_open_count": {
+            "type": [
+              "integer",
+              "null"
             ]
           },
           "beacon": {
             "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase_price": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "rev": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase_first": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase": {
-            "type": [
-              "null",
-              "integer"
-            ]
-          },
-          "purchase_second": {
-            "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
             ]
           },
           "click": {
             "type": [
-              "null",
-              "integer"
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "nhi_clicks_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "precached_opens_total": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "real_and_precached_opens": {
+            "type": [
+              "integer",
+              "null"
             ]
           }
         }
