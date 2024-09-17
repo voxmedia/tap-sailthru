@@ -205,6 +205,8 @@ class BlastStatsStream(SailthruStream):
     schema_filepath = SCHEMAS_DIR / "blast_stats.json"
     parent_stream_type = BlastStream
     rest_method = "GET"
+    #  we set ignore_parent_replication_key = True here since we'd want the latest stats for each blast. the tradeoff is that the ingestion takes longer.
+    ignore_parent_replication_key = True
 
     def get_url(self, context: Optional[dict]) -> str:
         """Construct url for api request.
