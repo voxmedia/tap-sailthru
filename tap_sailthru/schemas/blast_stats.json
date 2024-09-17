@@ -70,6 +70,66 @@
         "null"
       ]
     },
+    "rev": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "purchase": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "purchase_first": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "purchase_second": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "purchase_price": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "optout": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "spam": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "hardbounce": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "softbounce": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "view": {
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
     "confirmed_opens": {
       "type": [
         "integer",
@@ -419,6 +479,18 @@
               "null"
             ]
           },
+          "optout": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "spam": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
           "hardbounce": {
             "type": [
               "integer",
@@ -578,6 +650,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -633,6 +711,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -742,6 +850,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -797,6 +911,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -906,6 +1050,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -961,6 +1111,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -1070,6 +1250,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -1125,6 +1311,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -1234,6 +1450,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -1289,6 +1511,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -1398,6 +1650,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -1453,6 +1711,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -1562,6 +1850,12 @@
                 "null"
               ]
             },
+            "optout": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
             "spam": {
               "type": [
                 "integer",
@@ -1617,6 +1911,36 @@
               ]
             },
             "beacon": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "rev": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_first": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_second": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "purchase_price": {
               "type": [
                 "integer",
                 "null"
@@ -1722,6 +2046,24 @@
             ]
           },
           "pv": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "hardbounce": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "softbounce": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "view": {
             "type": [
               "integer",
               "null"
@@ -1879,6 +2221,12 @@
               "null"
             ]
           },
+          "optout": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
           "spam": {
             "type": [
               "integer",
@@ -1934,6 +2282,36 @@
             ]
           },
           "beacon": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase_first": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase_second": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase_price": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "rev": {
             "type": [
               "integer",
               "null"
@@ -2129,6 +2507,12 @@
               "null"
             ]
           },
+          "optout": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
           "spam": {
             "type": [
               "integer",
@@ -2178,6 +2562,36 @@
             ]
           },
           "beacon": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase_first": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase_second": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "purchase_price": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "rev": {
             "type": [
               "integer",
               "null"
