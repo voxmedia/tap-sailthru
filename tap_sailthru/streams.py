@@ -160,7 +160,7 @@ class BlastStream(SailthruStream):
         """
 
         # set the start date to 7 days before the last replication state
-        starting_replication_time = self.stream_state.get("starting_replication_value")
+        starting_replication_time = self.stream_state.get("starting_replication_value") or self.config.get('start_date')
         starting_replication_date = pendulum.parse(starting_replication_time)
         starting_replication_date_minus_7 = starting_replication_date.subtract(days=7).start_of('day')
         start_date = starting_replication_date_minus_7.to_date_string()
