@@ -158,10 +158,17 @@ class BlastStream(SailthruStream):
         :param context: Stream partition or context dictionary.
         :returns: dict, A dictionary containing the request payload.
         """
+
+        # set the start date to 7 days before the last replication state
+        starting_replication_time = self.stream_state.get("starting_replication_value") or self.config.get('start_date')
+        starting_replication_date = pendulum.parse(starting_replication_time)
+        starting_replication_date_minus_7 = starting_replication_date.subtract(days=7).start_of('day')
+        start_date = starting_replication_date_minus_7.to_date_string()
+
         return {
             "status": "sent",
             "limit": 0,
-            "start_date": self.stream_state.get("starting_replication_value"),
+            "start_date": start_date,
         }
 
     def get_child_context(self, record: dict, context: Optional[dict]) -> dict:
@@ -205,8 +212,6 @@ class BlastStatsStream(SailthruStream):
     schema_filepath = SCHEMAS_DIR / "blast_stats.json"
     parent_stream_type = BlastStream
     rest_method = "GET"
-    #  we set ignore_parent_replication_key = True here since we'd want the latest stats for each blast. the tradeoff is that the ingestion takes longer.
-    ignore_parent_replication_key = True
 
     def get_url(self, context: Optional[dict]) -> str:
         """Construct url for api request.
