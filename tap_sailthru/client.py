@@ -82,7 +82,7 @@ class SailthruStream(RESTStream):
         finished = False
 
         client = self.authenticator
-        http_method = self._http_method
+        http_method = self.http_method
         url: str = self.get_url(context)
         request_data = self.prepare_request_payload(context, next_page_token) or {}
         headers = self.http_headers
